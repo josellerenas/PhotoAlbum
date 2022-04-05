@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parentCardView"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="7dp"
+    android:layout_margin="5dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/txtAlbumName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgAlbum"
+            android:text="Album Name" />
+
+        <TextView
+            android:id="@+id/txtStampsDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAlbumName"
+            android:text="0" />
+
+        <TextView
+            android:id="@+id/txtSlash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAlbumName"
+            android:layout_toRightOf="@+id/txtStampsDone"
+            android:text="/" />
+
+        <TextView
+            android:id="@+id/txtStampsGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAlbumName"
+            android:layout_toRightOf="@+id/txtSlash"
+            android:text="100" />
+
+        <TextView
+            android:id="@+id/txtPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAlbumName"
+            android:layout_marginStart="30dp"
+            android:layout_toRightOf="@+id/txtStampsGoal"
+            android:text="99" />
+
+        <TextView
+            android:id="@+id/txtPercentSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:layout_toRightOf="@+id/txtPercent"
+            android:layout_below="@+id/txtAlbumName"/>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

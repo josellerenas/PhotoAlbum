@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <EditText
+        android:id="@+id/editTxtFirstName"
+        android:layout_width="180dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:hint="First Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editTxtEmail"
+        app:layout_constraintEnd_toStartOf="@+id/editTxtLastName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRegister" />
+
+    <EditText
+        android:id="@+id/editTxtLastName"
+        android:layout_width="180dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:hint="Last Name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/editTxtFirstName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTxtFirstName"
+        app:layout_constraintTop_toTopOf="@+id/editTxtFirstName"
+
+        tools:layout_editor_absoluteY="72dp" />
+
+    <EditText
+        android:id="@+id/editTxtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/editTxtPasswod_Register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTxtFirstName" />
+
+    <EditText
+        android:id="@+id/editTxtPasswod_Register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/editTxtConfirmPassword_Register"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTxtEmail" />
+
+    <EditText
+        android:id="@+id/editTxtConfirmPassword_Register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/spCountry"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTxtPasswod_Register" />
+
+    <Spinner
+        android:id="@+id/spCountry"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/spState"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtCountry_Register"
+        app:layout_constraintTop_toBottomOf="@+id/editTxtConfirmPassword_Register" />
+
+    <Spinner
+        android:id="@+id/spState"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/spCity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtState_Register"
+
+        app:layout_constraintTop_toBottomOf="@+id/spCountry" />
+
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spCity" />
+
+    <TextView
+        android:id="@+id/txtRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registro de usuario"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/editTxtFirstName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="542dp" />
+
+    <TextView
+        android:id="@+id/txtCountry_Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Country"
+        app:layout_constraintEnd_toStartOf="@+id/spCountry"
+        app:layout_constraintBottom_toBottomOf="@+id/spCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spCountry" />
+
+    <TextView
+        android:id="@+id/txtState_Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State"
+        app:layout_constraintBottom_toBottomOf="@+id/spState"
+        app:layout_constraintEnd_toStartOf="@+id/spState"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spState"/>
+
+    <Spinner
+        android:id="@+id/spCity"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtCity"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignIn"
+        app:layout_constraintTop_toBottomOf="@id/spState"/>
+
+    <TextView
+        android:id="@+id/txtCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City"
+        app:layout_constraintBottom_toBottomOf="@+id/spCity"
+        app:layout_constraintEnd_toStartOf="@+id/spCity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spCity" />
+</androidx.constraintlayout.widget.ConstraintLayout>
