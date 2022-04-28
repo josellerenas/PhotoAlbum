@@ -13,14 +13,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapter.ViewHolder> {
 
     // Declaring variables
-    private ArrayList<String> albumName;
+    // NOTE: Here, I changed albumName from being an ArrayList to List
+    private List<String> albumName;
 
     // Constructor
-    public PhotoRecViewAdapter(ArrayList<String> data) {
+    public PhotoRecViewAdapter(List<String> data) {
         this.albumName = data;
     }
 

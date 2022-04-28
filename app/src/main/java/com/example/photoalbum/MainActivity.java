@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
                         if (databaseHelper.correctPassword(editTxtUser.getText().toString(),
                                 editTxtPassword.getText().toString())) {
                             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                            intent.putExtra("id", databaseHelper.getId(editTxtUser.getText().toString()));
+                            intent.putExtra("first_name", databaseHelper.getFirstName(editTxtUser.getText().toString()));
+                            intent.putExtra("email", editTxtUser.getText().toString());
                             startActivity(intent);
                         } else {
                             Toast.makeText(MainActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();

@@ -12,15 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
     // Declaring variables
     private TextView txtUser_Login;
-    private int user_id;
     private RecyclerView recView;
     private PhotoRecViewAdapter adapter;
-    private ArrayList<String> dataset;
+    private List<String> dataset;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         // Putting an arrow back icon in the action bar. Only the visual
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        txtUser_Login.setText(String.valueOf(getIdFromIntent()));
+        // The recyclerView is filled with the user's origin state cities
+        txtUser_Login.setText(getFirstNameFromIntent());
+        dataset = databaseHelper.getUsersCities(getEmailFromIntent());
+
 
         recView = findViewById(R.id.recViewLatest);
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
@@ -41,10 +45,13 @@ public class LoginActivity extends AppCompatActivity {
 
         adapter = new PhotoRecViewAdapter(dataset);
         recView.setAdapter(adapter);
+
+        //TODO Check if I can improve the swiping of the cardviews, and keep working on the next
     }
 
     // Initialize variables
     private void init() {
+        databaseHelper = new DatabaseHelper(this);
         txtUser_Login = findViewById(R.id.txtUser_Login);
         dataset = new ArrayList<>();
         dataset.add("Colima");
@@ -59,12 +66,22 @@ public class LoginActivity extends AppCompatActivity {
         dataset.add("Manzanillo");
     }
 
-    private int getIdFromIntent() {
+    // Obtain the user's first name, in order to salute them
+    private String getFirstNameFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            return intent.getIntExtra("id", -1);
+            return intent.getStringExtra("first_name");
         } else {
-            return -2;
+            return "Error";
+        }
+    }
+
+    private String getEmailFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            return intent.getStringExtra("email");
+        } else {
+            return "Error";
         }
     }
 

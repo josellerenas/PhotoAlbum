@@ -10,8 +10,8 @@
         android:id="@+id/txtWelcome_Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
         android:text="Welcome!"
+        android:layout_marginStart="100dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/glhLogin"
         app:layout_constraintEnd_toStartOf="@+id/txtUser_Login"
@@ -23,17 +23,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="user"
+        android:layout_marginEnd="100dp"
         android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/txtWelcome_Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/txtWelcome_Login"
         app:layout_constraintTop_toTopOf="@+id/txtWelcome_Login"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recViewLatest"
-        android:layout_width="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
