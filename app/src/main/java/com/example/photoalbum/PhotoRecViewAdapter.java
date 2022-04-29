@@ -1,6 +1,7 @@
 package com.example.photoalbum;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,12 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
     // Declaring variables
     // NOTE: Here, I changed albumName from being an ArrayList to List
     private List<String> albumName;
+    private List<City> city;
+    private Context mContext;
 
     // Constructor
-    public PhotoRecViewAdapter(List<String> data) {
+    public PhotoRecViewAdapter(Context mContext, List<String> data) {
+        this.mContext = mContext;
         this.albumName = data;
     }
 
@@ -38,11 +42,27 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtAlbumName.setText(albumName.get(position));
+
+        //TODO  -  Create a onClickListener for the recyclerview
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, StampActivity.class);
+                //intent.putExtra("city_name", city.get(position).getName());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return albumName.size();
+    }
+
+    public void setCity(List<City> city) {
+        this.city = city;
+        notifyDataSetChanged();
     }
 
 

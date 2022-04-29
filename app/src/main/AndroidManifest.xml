@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoAlbum">
         <activity
+            android:name=".StampActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

@@ -172,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Get the cities from a certain state (user's state), to fill the recyclerviews
     // This example uses Colima.
     public List<String> getUsersCities(String email) {
-        // In this case, because my user is from Colima, I need to select the ten counties from Colima
+        // In this case, because my user is from Colima, I need to select the ten cities from Colima
         String state = "";
         List<String> returnList = new ArrayList<>();
         String queryString = "SELECT " + COLUMN_STATE_USERS + " FROM " + TABLE_USERS + " WHERE " +
@@ -191,6 +191,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 returnList.add(cursor.getString(0));
             } while (cursor.moveToNext());
         }
+        return returnList;
+    }
+
+    public List<String> getCitysStamps(String city) {
+
+        //TODO fix this another thing. I need to rebuild from scratch the database
+//        String state = "";
+        List<String> returnList = new ArrayList<>();
+//        String queryString = "SELECT " +  + " FROM " + TABLE_USERS + " WHERE " +
+//                COLUMN_EMAIL + " = '" + email + "'";
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(queryString, null);
+//        if (cursor.moveToFirst()) {
+//            state = cursor.getString(0);
+//        }
+//
+//        queryString = "SELECT " + COLUMN_CITY_NAME + " FROM " + TABLE_COUNTRIES + " WHERE " +
+//                COLUMN_STATE_NAME + " = '" + state + "'";
+//        cursor = db.rawQuery(queryString, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                returnList.add(cursor.getString(0));
+//            } while (cursor.moveToNext());
+//        }
         return returnList;
     }
 

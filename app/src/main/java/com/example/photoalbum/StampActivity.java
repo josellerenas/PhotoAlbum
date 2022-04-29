@@ -3,77 +3,62 @@ package com.example.photoalbum;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends AppCompatActivity {
+public class StampActivity extends AppCompatActivity {
 
-    // Declaring variables
-    private TextView txtUser_Login;
-    private RecyclerView recView;
-    private PhotoRecViewAdapter adapter;
+    private List<City> city;
+    private TextView citysStamps;
     private List<String> dataset;
     private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_stamp);
 
+        // TODO - fix this shit
         // Initialize variables
         init();
 
         // Putting an arrow back icon in the action bar. Only the visual
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // The recyclerView is filled with the user's origin state cities
-        txtUser_Login.setText(getFirstNameFromIntent());
-        dataset = databaseHelper.getUsersCities(getEmailFromIntent());
-
-        recView = findViewById(R.id.recViewLatest);
-        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
-                false));
-
-        adapter = new PhotoRecViewAdapter(this, dataset);
-        recView.setAdapter(adapter);
-
-        //TODO Check if I can improve the swiping of the cardviews, and keep working on the next
+        // The recyclerView is filled with the selected city's stamps
+        citysStamps.setText(getCityNameFromIntent());
+        dataset = databaseHelper.getCitysStamps(getCityNameFromIntent());
+//
+//        recView = findViewById(R.id.recViewLatest);
+//        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
+//                false));
+//
+//        adapter = new PhotoRecViewAdapter(this, dataset);
+//        recView.setAdapter(adapter);
+//        recView.setCity(city);
     }
 
-    // Initialize variables
     private void init() {
         databaseHelper = new DatabaseHelper(this);
-        txtUser_Login = findViewById(R.id.txtUser_Login);
+        citysStamps = findViewById(R.id.txtCitysStamps);
+        city = new ArrayList<>();
         dataset = new ArrayList<>();
     }
 
-    // Obtain the user's first name, in order to salute them
-    private String getFirstNameFromIntent() {
+    private String getCityNameFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            return intent.getStringExtra("first_name");
+            return intent.getStringExtra("city_name");
         } else {
             return "Error";
         }
     }
-
-    private String getEmailFromIntent() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            return intent.getStringExtra("email");
-        } else {
-            return "Error";
-        }
-    }
-
 
     // Method to actually get to work the arrow back icon in the action bar
     @Override
