@@ -49,7 +49,7 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, StampActivity.class);
-                //intent.putExtra("city_name", city.get(position).getName());
+                intent.putExtra("city_name", albumName.get(position));
                 mContext.startActivity(intent);
             }
         });
@@ -85,3 +85,4 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
         }
     }
 }
+

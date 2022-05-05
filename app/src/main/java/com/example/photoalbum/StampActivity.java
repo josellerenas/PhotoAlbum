@@ -2,7 +2,6 @@ package com.example.photoalbum;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import java.util.List;
 public class StampActivity extends AppCompatActivity {
 
     private List<City> city;
-    private TextView citysStamps;
+    private TextView txtCitysStamps;
     private List<String> dataset;
     private DatabaseHelper databaseHelper;
 
@@ -32,7 +31,7 @@ public class StampActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // The recyclerView is filled with the selected city's stamps
-        citysStamps.setText(getCityNameFromIntent());
+        txtCitysStamps.setText(getCityNameFromIntent());
         dataset = databaseHelper.getCitysStamps(getCityNameFromIntent());
 //
 //        recView = findViewById(R.id.recViewLatest);
@@ -46,7 +45,7 @@ public class StampActivity extends AppCompatActivity {
 
     private void init() {
         databaseHelper = new DatabaseHelper(this);
-        citysStamps = findViewById(R.id.txtCitysStamps);
+        txtCitysStamps = findViewById(R.id.txtCitysStamps);
         city = new ArrayList<>();
         dataset = new ArrayList<>();
     }
