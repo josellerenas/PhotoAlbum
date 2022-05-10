@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -43,14 +44,19 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtAlbumName.setText(albumName.get(position));
 
-        //TODO  -  Create a onClickListener for the recyclerview
-
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, StampActivity.class);
-                intent.putExtra("city_name", albumName.get(position));
-                mContext.startActivity(intent);
+                if (mContext.toString().contains("LoginActivity")) {
+                    Intent intent = new Intent(mContext, StampActivity.class);
+                    intent.putExtra("city_name", albumName.get(position));
+                    mContext.startActivity(intent);
+                } else if (mContext.toString().contains("StampActivity")) {
+                    Intent intent = new Intent(mContext, IndividualStampActivity.class);
+//                    intent.putExtra("stamp_name", albumName.get(position));
+                    mContext.startActivity(intent);
+                }
+                
             }
         });
     }

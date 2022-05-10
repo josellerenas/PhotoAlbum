@@ -14,26 +14,29 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_COUNTRIES = "COUNTRIES";
-    public static final String COLUMN_COUNTRY_NAME = "NAME";
+    public static final String TABLE_CITIES = "CITIES";
+    public static final String COLUMN_CITY_ID = "CITY_ID";
+    public static final String COLUMN_COUNTRY_NAME = "COUNTRY_NAME";
     public static final String COLUMN_STATE_NAME = "STATE_NAME";
     public static final String COLUMN_CITY_NAME = "CITY_NAME";
 
-    public static final String TABLE_USERS = "USER_LIST";
-    public static final String COLUMN_ID = "ID";
+    public static final String TABLE_USERS = "USERS";
+    public static final String COLUMN_USER_ID = "USER_ID";
     public static final String COLUMN_FIRST_NAME = "FIRST_NAME";
     public static final String COLUMN_LAST_NAME = "LAST_NAME";
     public static final String COLUMN_EMAIL = "EMAIL";
     public static final String COLUMN_PASSWORD = "PASSWORD";
-    public static final String COLUMN_COUNTRY_USERS = "COUNTRY";
-    public static final String COLUMN_STATE_USERS = "STATE";
-    public static final String COLUMN_CITY_USERS = "CITY";
+    public static final String COLUMN_COUNTRY = "COUNTRY";
+    public static final String COLUMN_STATE = "STATE";
+    public static final String COLUMN_CITY = "CITY";
 
+    public static final String TABLE_STAMPS = "STAMPS";
+    public static final String COLUMN_STAMP_NAME = "STAMP_NAME";
 
     /* This is one of the constructors defined in SQLiteOpenHelper class.
         We modified the constructor with hardcoded data */
     public DatabaseHelper(@Nullable Context context) {
-        super(context, "photoalbum.db", null, 1);
+        super(context, "photoalbum_v2.db", null, 1);
     }
 
     /* The next two methods I had to implement them because the SQLiteOpenHelper needed it
@@ -57,7 +60,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<String> getCountries() {
         List<String> returnList = new ArrayList<>();
         boolean countryAlreadyExists = false;
-        String queryString = "SELECT " + COLUMN_COUNTRY_NAME + " FROM " + TABLE_COUNTRIES;
+        String queryString = "SELECT " + COLUMN_COUNTRY_NAME + " FROM " + TABLE_CITIES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
@@ -80,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<String> getStates() {
         List<String> returnList = new ArrayList<>();
         boolean stateAlreadyExists = false;
-        String queryString = "SELECT " + COLUMN_STATE_NAME + " FROM " + TABLE_COUNTRIES;
+        String queryString = "SELECT " + COLUMN_STATE_NAME + " FROM " + TABLE_CITIES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
@@ -103,7 +106,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<String> getCities() {
         List<String> returnList = new ArrayList<>();
         boolean cityAlreadyExists = false;
-        String queryString = "SELECT " + COLUMN_CITY_NAME + " FROM " + TABLE_COUNTRIES;
+        String queryString = "SELECT " + COLUMN_CITY_NAME + " FROM " + TABLE_CITIES;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
@@ -144,9 +147,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_LAST_NAME, newUser.getLastName());
         cv.put(COLUMN_EMAIL, newUser.getEmail());
         cv.put(COLUMN_PASSWORD, newUser.getPassword());
-        cv.put(COLUMN_COUNTRY_USERS, newUser.getCountry());
-        cv.put(COLUMN_STATE_USERS, newUser.getState());
-        cv.put(COLUMN_CITY_USERS, newUser.getCity());
+        cv.put(COLUMN_COUNTRY, newUser.getCountry());
+        cv.put(COLUMN_STATE, newUser.getState());
+        cv.put(COLUMN_CITY, newUser.getCity());
 
         long insert = db.insert(TABLE_USERS,null, cv);
         if (insert == -1) {
@@ -175,7 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // In this case, because my user is from Colima, I need to select the ten cities from Colima
         String state = "";
         List<String> returnList = new ArrayList<>();
-        String queryString = "SELECT " + COLUMN_STATE_USERS + " FROM " + TABLE_USERS + " WHERE " +
+        String queryString = "SELECT " + COLUMN_STATE + " FROM " + TABLE_USERS + " WHERE " +
                 COLUMN_EMAIL + " = '" + email + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(queryString, null);
@@ -183,7 +186,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             state = cursor.getString(0);
         }
 
-        queryString = "SELECT " + COLUMN_CITY_NAME + " FROM " + TABLE_COUNTRIES + " WHERE " +
+        queryString = "SELECT " + COLUMN_CITY_NAME + " FROM " + TABLE_CITIES + " WHERE " +
                 COLUMN_STATE_NAME + " = '" + state + "'";
         cursor = db.rawQuery(queryString, null);
         if (cursor.moveToFirst()) {
@@ -196,25 +199,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<String> getCitysStamps(String city) {
 
-        //TODO fix this another thing. I need to rebuild from scratch the database
-//        String state = "";
+        //TODO fix this another thing.
+        int cityID = 0;
         List<String> returnList = new ArrayList<>();
-//        String queryString = "SELECT " +  + " FROM " + TABLE_USERS + " WHERE " +
-//                COLUMN_EMAIL + " = '" + email + "'";
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery(queryString, null);
-//        if (cursor.moveToFirst()) {
-//            state = cursor.getString(0);
-//        }
-//
-//        queryString = "SELECT " + COLUMN_CITY_NAME + " FROM " + TABLE_COUNTRIES + " WHERE " +
-//                COLUMN_STATE_NAME + " = '" + state + "'";
-//        cursor = db.rawQuery(queryString, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                returnList.add(cursor.getString(0));
-//            } while (cursor.moveToNext());
-//        }
+        // Query to know the city ID
+        String queryString = "SELECT " + COLUMN_CITY_ID + " FROM " + TABLE_CITIES + " WHERE " +
+                COLUMN_CITY_NAME + " = '" + city + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            cityID = cursor.getInt(0);
+        }
+
+        queryString = "SELECT " + COLUMN_STAMP_NAME + " FROM " + TABLE_STAMPS + " WHERE " +
+                COLUMN_CITY_ID + " = '" + cityID + "'";
+        cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                returnList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
         return returnList;
     }
 

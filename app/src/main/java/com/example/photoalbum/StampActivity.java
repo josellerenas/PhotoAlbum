@@ -2,6 +2,8 @@ package com.example.photoalbum;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +19,8 @@ public class StampActivity extends AppCompatActivity {
     private TextView txtCitysStamps;
     private List<String> dataset;
     private DatabaseHelper databaseHelper;
+    private RecyclerView recView;
+    private PhotoRecViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +37,18 @@ public class StampActivity extends AppCompatActivity {
         // The recyclerView is filled with the selected city's stamps
         txtCitysStamps.setText(getCityNameFromIntent());
         dataset = databaseHelper.getCitysStamps(getCityNameFromIntent());
-//
-//        recView = findViewById(R.id.recViewLatest);
-//        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
-//                false));
-//
-//        adapter = new PhotoRecViewAdapter(this, dataset);
-//        recView.setAdapter(adapter);
-//        recView.setCity(city);
+
+        recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
+                false));
+
+        adapter = new PhotoRecViewAdapter(this, dataset);
+        recView.setAdapter(adapter);
     }
 
     private void init() {
         databaseHelper = new DatabaseHelper(this);
         txtCitysStamps = findViewById(R.id.txtCitysStamps);
+        recView = findViewById(R.id.recViewStamps);
         city = new ArrayList<>();
         dataset = new ArrayList<>();
     }
