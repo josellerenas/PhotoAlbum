@@ -42,10 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false));
 
-        adapter = new PhotoRecViewAdapter(this, dataset);
+        adapter = PhotoRecViewAdapter.getInstance(this, dataset, getEmailFromIntent());
         recView.setAdapter(adapter);
-
-        //TODO Check if I can improve the swiping of the cardviews, and keep working on the next
     }
 
     // Initialize variables
@@ -73,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             return "Error";
         }
     }
-
 
     // Method to actually get to work the arrow back icon in the action bar
     @Override

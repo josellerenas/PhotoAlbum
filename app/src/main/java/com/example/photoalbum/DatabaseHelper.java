@@ -32,6 +32,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_STAMPS = "STAMPS";
     public static final String COLUMN_STAMP_NAME = "STAMP_NAME";
+    public static final String COLUMN_STAMP_ID = "STAMP_ID";
+
+    public static final String TABLE_USERS_STAMPS = "USERS_STAMPS";
+    public static final String COLUMN_UPLOAD_DATE = "UPLOAD_DATE";
+    public static final String COLUMN_STAMP_LINK = "STAMP_LINK";
 
     /* This is one of the constructors defined in SQLiteOpenHelper class.
         We modified the constructor with hardcoded data */
@@ -199,7 +204,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<String> getCitysStamps(String city) {
 
-        //TODO fix this another thing.
         int cityID = 0;
         List<String> returnList = new ArrayList<>();
         // Query to know the city ID
@@ -222,6 +226,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return returnList;
     }
 
+    public int getUserID(String userEmail) {
+        int userID = 0;
+        String queryString = "SELECT " + COLUMN_USER_ID + " FROM " + TABLE_USERS + " WHERE " +
+                COLUMN_EMAIL + " = '" + userEmail + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            userID = cursor.getInt(0);
+        }
+        return userID;
+    }
+
+    public int getStampID(String stampName) {
+        int stampID = 0;
+        String queryString = "SELECT " + COLUMN_STAMP_ID + " FROM " + TABLE_STAMPS + " WHERE " +
+                COLUMN_STAMP_NAME + " = '" + stampName + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            stampID = cursor.getInt(0);
+        }
+        return stampID;
+    }
 
     // Check if the password is correct
     public boolean correctPassword(String email, String password) {
@@ -242,9 +269,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    // Add Stamp
-    public void addStamp() {
+    // Save Stamp
+    public boolean saveStamp(int userID, int stampID, String uploadDate, String stampLink) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
 
+        cv.put(COLUMN_USER_ID, userID);
+        cv.put(COLUMN_STAMP_ID, stampID);
+        cv.put(COLUMN_UPLOAD_DATE, uploadDate);
+        cv.put(COLUMN_STAMP_LINK, stampLink);
+
+        long insert = db.insert(TABLE_USERS_STAMPS,null, cv);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

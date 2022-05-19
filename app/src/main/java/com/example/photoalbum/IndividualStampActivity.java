@@ -16,12 +16,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
+
+import java.util.Date;
 
 public class IndividualStampActivity extends AppCompatActivity {
 
-    Button btnSelectImage;
-    ImageView imgStamp;
+    private Button btnSelectImage;
+    private ImageView imgStamp;
+    private DatabaseHelper databaseHelper;
+    private String stampLink;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,58 +38,74 @@ public class IndividualStampActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // TODO investigate how to use glide
-                Glide.with(IndividualStampActivity.this)
-                        .asBitmap()
-                        .load("https://www.egames.news/__export/1632703547217/sites/debate/img/2021/09/26/por_qux_es_tan_popular_el_anime_de_shingeki_no_kyojin.jpg_1902800913.jpg")
-                        .into(imgStamp);
+                // TODO investigate how to use Picasso, and the ACTION_OPEN DOCUMENT
+                // in the offical documentation of android
+                selectImage();
             }
         });
 
+        imgStamp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveStampInDatabase(stampLink);
+            }
+        });
 
-//        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(pickPhoto , 1);//one can be replaced with any action code
-//
-//        public void openSomeActivityForResult() {
-//            Intent intent = new Intent(this, SomeActivity.class);
-//            someActivityResultLauncher.launch(intent);
-//        }
-//
-//// You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-//        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK) {
-//                            // There are no request codes
-//                            Intent data = result.getData();
-//                            doSomeOperations();
-//                        }
-//                    }
-//                });
     }
+
+    final int REQUEST_IMAGE_OPEN = 1;
 
     public void selectImage() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("image/*");
-//        Toast.makeText(this, "entré", Toast.LENGTH_SHORT).show();
-        someActivityResultLauncher.launch(intent);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        // Only the system receives the ACTION_OPEN_DOCUMENT, so no need to test.
+        startActivityForResult(intent, REQUEST_IMAGE_OPEN);
     }
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == RESULT_OK) {
-                        // There are no request codes
-                        Intent data = result.getData();
-                        Uri uri = data.getData();
-                    }
-                }
-            });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_OPEN && resultCode == RESULT_OK) {
+            Uri fullPhotoUri = data.getData();
+            stampLink = fullPhotoUri.toString();
+            Picasso.get()
+                    .load(fullPhotoUri)
+                    .into(imgStamp);
+        }
+    }
+
+    private void saveStampInDatabase(String stampLink) {
+        Toast.makeText(this, getEmailFromIntent(), Toast.LENGTH_SHORT).show();
+//        int userID = databaseHelper.getUserID(getEmailFromIntent());
+//        Toast.makeText(this, "hola", Toast.LENGTH_SHORT).show();
+//        int stampID = databaseHelper.getStampID(getStampNameFromIntent());
+//        Date today = new Date();
+//        String uploadDate = today.toString();
+//        if (databaseHelper.saveStamp(userID, stampID, uploadDate, stampLink)) {
+//            Toast.makeText(this, "Stamp saved successfully!", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "Error, please try again", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+    private String getEmailFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            return intent.getStringExtra("user_email");
+        } else {
+            return "Error";
+        }
+    }
+
+    private String getStampNameFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            return intent.getStringExtra("stamp_name");
+        } else {
+            return "Error";
+        }
+    }
     
     private void init() {
         btnSelectImage = findViewById(R.id.btnSelectImage);

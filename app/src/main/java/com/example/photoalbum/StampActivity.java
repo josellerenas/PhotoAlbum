@@ -27,7 +27,6 @@ public class StampActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stamp);
 
-        // TODO - fix this shit
         // Initialize variables
         init();
 
@@ -41,7 +40,7 @@ public class StampActivity extends AppCompatActivity {
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false));
 
-        adapter = new PhotoRecViewAdapter(this, dataset);
+        adapter = PhotoRecViewAdapter.getInstance(this, dataset, getEmailFromIntent());
         recView.setAdapter(adapter);
     }
 
@@ -57,6 +56,15 @@ public class StampActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             return intent.getStringExtra("city_name");
+        } else {
+            return "Error";
+        }
+    }
+
+    private String getEmailFromIntent() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            return intent.getStringExtra("email");
         } else {
             return "Error";
         }
