@@ -10,22 +10,34 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+    MainActivity -> Checked and working 01/08/22
+    RegisteredActivity -> Checked and working 01/08/22
+
+    TODO
+    All Activities -> Handling the 'back' button
+ */
+
 public class MainActivity extends AppCompatActivity {
 
-    // Declaring variables that will be linked to the UI elements
+    // Declaring variables that will be linked to the UI elements.
     EditText editTxtUser, editTxtPassword;
     Button btnLogin;
     TextView txtSignIn;
 
+    // OnCreate event. Where the stuff happens.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Calling a method to initialice variables
-        init();
+        // Initialize variables
+        editTxtUser = findViewById(R.id.editTxtUser);
+        editTxtPassword = findViewById(R.id.editTxtPassword);
+        btnLogin = findViewById(R.id.btnLogIn);
+        txtSignIn = findViewById(R.id.txtSignIn);
 
-        // Making an hyperlink out of the Sign In TextView
+        // Making an hyperlink from the Sign In TextView
         txtSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,12 +46,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Login code
+        // Login button code
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this);
-                if (!emptyField()) {
+                if (editTxtUser.getText().toString().isEmpty() || editTxtPassword.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please be sure to fill all the fields",
+                            Toast.LENGTH_SHORT).show();
+                } else {
                     if (databaseHelper.existsUser(editTxtUser.getText().toString())) {
                         if (databaseHelper.correctPassword(editTxtUser.getText().toString(),
                                 editTxtPassword.getText().toString())) {
@@ -54,28 +69,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "User not registered",
                                 Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(MainActivity.this, "Please be sure to fill all the fields",
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-    
-    // Inicializing UI elements variables
-    private void init () {
-        editTxtUser = findViewById(R.id.editTxtUser);
-        editTxtPassword = findViewById(R.id.editTxtPassword);
-        btnLogin = findViewById(R.id.btnLogIn);
-        txtSignIn = findViewById(R.id.txtSignIn);
-    }
-
-    // Verify if any of the register fields is empty
-    private boolean emptyField() {
-        if (editTxtUser.getText().toString().isEmpty() || editTxtPassword.getText().toString().isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

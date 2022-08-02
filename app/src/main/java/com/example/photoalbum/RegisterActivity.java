@@ -2,6 +2,7 @@ package com.example.photoalbum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,7 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // Initialize variables
-        init();
+        initVariables();
 
         // Fill the Spinners
         fillSpinners();
@@ -34,20 +35,28 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User newUser = new User(editTxtFirstName.getText().toString(),
-                        editTxtLastName.getText().toString(), editTxtEmail.getText().toString(),
-                        editTxtPassword.getText().toString(), spCountry.getSelectedItem().toString(),
-                        spState.getSelectedItem().toString(), spCity.getSelectedItem().toString());
-
-                DatabaseHelper databaseHelper = new DatabaseHelper(RegisterActivity.this);
-
+                // If any of the fields is not empty
                 if (!emptyField()) {
+                    // If both password fields match
                     if (editTxtPassword.getText().toString().equals(editTxtConfirmPassword.getText().toString())) {
+                        // Create an instance of the DatabaseHelper to start make queries
+                        DatabaseHelper databaseHelper = new DatabaseHelper(RegisterActivity.this);
+                        // If the email is not already registered
                         if (!databaseHelper.existsUser(editTxtEmail.getText().toString())) {
+                            // Create a new instance of the class User
+                            User newUser = new User(editTxtFirstName.getText().toString(),
+                                    editTxtLastName.getText().toString(), editTxtEmail.getText().toString(),
+                                    editTxtPassword.getText().toString(), spCountry.getSelectedItem().toString(),
+                                    spState.getSelectedItem().toString(), spCity.getSelectedItem().toString());
+                            // Add the new user to the database. It's inside an 'if' to troubleshooting matters
                             if (databaseHelper.registerUser(newUser)) {
                                 Toast.makeText(RegisterActivity.this, "User registered successfully",
                                         Toast.LENGTH_SHORT).show();
-                                //TODO make an intent to go to another activity
+                                // Redirect to the login activity
+                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                intent.putExtra("first_name", editTxtFirstName.getText().toString());
+                                intent.putExtra("email", editTxtEmail.getText().toString());
+                                startActivity(intent);
                             } else {
                                 Toast.makeText(RegisterActivity.this, "Error, please try again",
                                         Toast.LENGTH_SHORT).show();
@@ -57,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(RegisterActivity.this, "The passwords doesn't match",
+                        Toast.makeText(RegisterActivity.this, "The passwords don't match",
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -69,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     // Initialize variables
-    private void init() {
+    private void initVariables() {
         editTxtFirstName = findViewById(R.id.editTxtFirstName);
         editTxtLastName = findViewById(R.id.editTxtLastName);
         editTxtEmail = findViewById(R.id.editTxtEmail);

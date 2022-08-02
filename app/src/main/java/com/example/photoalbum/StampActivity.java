@@ -41,6 +41,9 @@ public class StampActivity extends AppCompatActivity {
                 false));
 
         adapter = PhotoRecViewAdapter.getInstance(this, dataset, getEmailFromIntent());
+        adapter.updateDataset(dataset);
+        adapter.updateContext(this);
+
         recView.setAdapter(adapter);
     }
 

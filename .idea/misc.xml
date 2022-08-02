@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/drawable/ic_pepe_background.xml" value="0.1635" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/layout/activity_individual_stamp.xml" value="0.5" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/layout/activity_login.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/layout/activity_main.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/layout/activity_register.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/layout/activity_stamp.xml" value="0.40116959064327484" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/layout/list_item_album.xml" value="0.22" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/mipmap-anydpi-v26/ic_pepe.xml" value="0.1635" />
+        <entry key="..\:/Users/Peke/AndroidStudioProjects/PhotoAlbum/app/src/main/res/mipmap-anydpi-v26/ic_pepe_round.xml" value="0.1635" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -270,7 +271,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Save Stamp
+    // In its actual state, this method saves the stamp without validating. Now, I need to
+    // add validation, so if the userID and the stampID both are already registered in the
+    // same register, update it.
     public boolean saveStamp(int userID, int stampID, String uploadDate, String stampLink) {
+        if (isStampAlreadyOnTheDB(userID, stampID)) {
+            updateStamp(uploadDate, stampLink);
+        } else {
+
+        }
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -287,4 +297,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean isStampAlreadyOnTheDB(int userID, int stampID) {
+        String queryString = "SELECT " + COLUMN_USER_ID + " FROM " + TABLE_USERS_STAMPS + " WHERE " +
+                COLUMN_USER_ID + " = '" + userID + "' AND " + COLUMN_STAMP_ID + " = '" + stampID + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        return false;
+    }
+
+    // TODO keep modifying this method
+    public boolean updateStamp(String uploadDate, String stampLink) {
+        String queryString = "UPDATE " + TABLE_USERS_STAMPS + " SET " + COLUMN_UPLOAD_DATE +
+                " = '" + uploadDate + "', " + COLUMN_STAMP_LINK + " = '";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        }
+        return false;
+    }
 }

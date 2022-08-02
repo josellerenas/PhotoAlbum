@@ -76,17 +76,16 @@ public class IndividualStampActivity extends AppCompatActivity {
     }
 
     private void saveStampInDatabase(String stampLink) {
-        Toast.makeText(this, getEmailFromIntent(), Toast.LENGTH_SHORT).show();
-//        int userID = databaseHelper.getUserID(getEmailFromIntent());
-//        Toast.makeText(this, "hola", Toast.LENGTH_SHORT).show();
-//        int stampID = databaseHelper.getStampID(getStampNameFromIntent());
-//        Date today = new Date();
-//        String uploadDate = today.toString();
-//        if (databaseHelper.saveStamp(userID, stampID, uploadDate, stampLink)) {
-//            Toast.makeText(this, "Stamp saved successfully!", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Error, please try again", Toast.LENGTH_SHORT).show();
-//        }
+        int userID = databaseHelper.getUserID(getEmailFromIntent());
+        int stampID = databaseHelper.getStampID(getStampNameFromIntent());
+        Date today = new Date();
+        String uploadDate = today.toString();
+
+        if (databaseHelper.saveStamp(userID, stampID, uploadDate, stampLink)) {
+                Toast.makeText(this, "Stamp saved successfully!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error, please try again", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private String getEmailFromIntent() {
@@ -110,5 +109,6 @@ public class IndividualStampActivity extends AppCompatActivity {
     private void init() {
         btnSelectImage = findViewById(R.id.btnSelectImage);
         imgStamp = findViewById(R.id.imgStamp);
+        databaseHelper = new DatabaseHelper(this);
     }
 }

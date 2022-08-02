@@ -89,6 +89,13 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
         notifyDataSetChanged();
     }
 
+    public void updateDataset(List<String> albumName) {
+        this.albumName = albumName;
+    }
+
+    public void updateContext(Context mContext) {
+        this.mContext = mContext;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
