@@ -29,7 +29,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Initialize variables
-        init();
+        databaseHelper = new DatabaseHelper(this);
+        txtUser_Login = findViewById(R.id.txtUser_Login);
+        dataset = new ArrayList<>();
 
         // Putting an arrow back icon in the action bar. Only the visual
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -37,20 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         // The recyclerView is filled with the user's origin state cities
         txtUser_Login.setText(getFirstNameFromIntent());
         dataset = databaseHelper.getUsersCities(getEmailFromIntent());
-
         recView = findViewById(R.id.recViewLatest);
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false));
-
-        adapter = PhotoRecViewAdapter.getInstance(this, dataset, getEmailFromIntent());
+        adapter = new PhotoRecViewAdapter(this, dataset, getEmailFromIntent());
         recView.setAdapter(adapter);
-    }
-
-    // Initialize variables
-    private void init() {
-        databaseHelper = new DatabaseHelper(this);
-        txtUser_Login = findViewById(R.id.txtUser_Login);
-        dataset = new ArrayList<>();
     }
 
     // Obtain the user's first name, in order to salute them
@@ -63,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Obtain the user's email, in order to fill the recyclerView
     private String getEmailFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {

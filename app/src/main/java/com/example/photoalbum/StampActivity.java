@@ -36,14 +36,9 @@ public class StampActivity extends AppCompatActivity {
         // The recyclerView is filled with the selected city's stamps
         txtCitysStamps.setText(getCityNameFromIntent());
         dataset = databaseHelper.getCitysStamps(getCityNameFromIntent());
-
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false));
-
-        adapter = PhotoRecViewAdapter.getInstance(this, dataset, getEmailFromIntent());
-        adapter.updateDataset(dataset);
-        adapter.updateContext(this);
-
+        adapter = new PhotoRecViewAdapter(this, dataset, getEmailFromIntent());
         recView.setAdapter(adapter);
     }
 
@@ -67,7 +62,7 @@ public class StampActivity extends AppCompatActivity {
     private String getEmailFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            return intent.getStringExtra("email");
+            return intent.getStringExtra("user_email");
         } else {
             return "Error";
         }

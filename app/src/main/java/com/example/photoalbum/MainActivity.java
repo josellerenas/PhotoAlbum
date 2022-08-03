@@ -13,8 +13,11 @@ import android.widget.Toast;
 /*
     MainActivity -> Checked and working 01/08/22
     RegisteredActivity -> Checked and working 01/08/22
+    LoginActivity -> Checked and working 02/08/22
 
     TODO
+    If an user tries to upload a stamp he or she already uploaded, ask him/her if she/he wants to
+    update the stamp.
     All Activities -> Handling the 'back' button
  */
 

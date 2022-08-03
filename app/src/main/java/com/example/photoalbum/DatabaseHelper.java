@@ -265,35 +265,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Log in User
-    public void logInUser() {
-
-    }
-
     // Save Stamp
     // In its actual state, this method saves the stamp without validating. Now, I need to
     // add validation, so if the userID and the stampID both are already registered in the
     // same register, update it.
     public boolean saveStamp(int userID, int stampID, String uploadDate, String stampLink) {
         if (isStampAlreadyOnTheDB(userID, stampID)) {
-            updateStamp(uploadDate, stampLink);
+            return updateStamp(uploadDate, stampLink);
         } else {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
 
-        }
+            cv.put(COLUMN_USER_ID, userID);
+            cv.put(COLUMN_STAMP_ID, stampID);
+            cv.put(COLUMN_UPLOAD_DATE, uploadDate);
+            cv.put(COLUMN_STAMP_LINK, stampLink);
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-
-        cv.put(COLUMN_USER_ID, userID);
-        cv.put(COLUMN_STAMP_ID, stampID);
-        cv.put(COLUMN_UPLOAD_DATE, uploadDate);
-        cv.put(COLUMN_STAMP_LINK, stampLink);
-
-        long insert = db.insert(TABLE_USERS_STAMPS,null, cv);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
+            long insert = db.insert(TABLE_USERS_STAMPS,null, cv);
+            if (insert == -1) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 

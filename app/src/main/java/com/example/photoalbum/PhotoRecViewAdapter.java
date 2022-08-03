@@ -26,37 +26,41 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
     private Context mContext;
     private String userEmail;
 
-    // Constructor Singleton Pattern
-    private static PhotoRecViewAdapter recViewAdapter;
+//    // Constructor Singleton Pattern
+//    private static PhotoRecViewAdapter recViewAdapter;
+//
+//    // I did this singleton because I wanted userEmail to stay the same and not being
+//    // overwritten, but instead a problem emerged: the dataset doesn't update when we use
+//    // the recview for 2nd time. Fix this, quitting the singleton and passing userEmail each
+//    // time that is necessary. OR, create a updateDataset() method, keeping the singleton
+//    public static PhotoRecViewAdapter getInstance(Context mContext, List<String> data,
+//                                                  String userEmail) {
+//        if (recViewAdapter == null) {
+//            recViewAdapter = new PhotoRecViewAdapter(mContext, data, userEmail);
+//        }
+//        return recViewAdapter;
+//    }
 
-    // TODO I did this singleton because I wanted userEmail to stay the same and not being
-    // overwrited, but instead a problem emerged: the dataset doesn't update when we use
-    // the recview for 2nd time. Fix this, quitting the singleton and passing userEmail each
-    // time that is neccessary. OR, create a updateDataset() method, keeping the singleton
-    public static PhotoRecViewAdapter getInstance(Context mContext, List<String> data,
-                                                  String userEmail) {
-        if (recViewAdapter == null) {
-            recViewAdapter = new PhotoRecViewAdapter(mContext, data, userEmail);
-        }
-        return recViewAdapter;
-    }
-
-    private PhotoRecViewAdapter(Context mContext, List<String> data,
-                                String userEmail) {
+    // Normal Constructor
+    PhotoRecViewAdapter(Context mContext, List<String> data,
+                        String userEmail) {
         this.mContext = mContext;
         this.albumName = data;
         this.userEmail = userEmail;
     }
 
+    // OnCreateViewHolder defines the 'card' or the 'layout' we are gonna use to multiply in the recView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.list_item_album, viewGroup, false);
-
         return new ViewHolder(view);
     }
 
+    // onBindViewHolder makes a 'foreach' loop in the data/albumName List.
+    // Note: This event uses a 'ViewHolder' object. We should declare the class. It's at the end of
+    // this document.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.txtAlbumName.setText(albumName.get(position));
@@ -67,6 +71,7 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
                 if (mContext.toString().contains("LoginActivity")) {
                     Intent intent = new Intent(mContext, StampActivity.class);
                     intent.putExtra("city_name", albumName.get(position));
+                    intent.putExtra("user_email", userEmail);
                     mContext.startActivity(intent);
                 } else if (mContext.toString().contains("StampActivity")) {
                     Intent intent = new Intent(mContext, IndividualStampActivity.class);
@@ -74,7 +79,6 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
                     intent.putExtra("user_email", userEmail);
                     mContext.startActivity(intent);
                 }
-                
             }
         });
     }
@@ -89,14 +93,7 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
         notifyDataSetChanged();
     }
 
-    public void updateDataset(List<String> albumName) {
-        this.albumName = albumName;
-    }
-
-    public void updateContext(Context mContext) {
-        this.mContext = mContext;
-    }
-
+    // Declaring ViewHolder class, which will be used in the onBindViewHolder event
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardView;
