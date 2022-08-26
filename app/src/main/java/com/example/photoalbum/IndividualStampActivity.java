@@ -58,12 +58,12 @@ public class IndividualStampActivity extends AppCompatActivity {
             }
         });
 
-        imgStamp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveStampInDatabase(stampLink);
-            }
-        });
+//        imgStamp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                saveStampInDatabase(stampLink);
+//            }
+//        });
 
     }
 

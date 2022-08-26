@@ -16,8 +16,7 @@ import android.widget.Toast;
     LoginActivity -> Checked and working 02/08/22
 
     TODO
-    If an user tries to upload a stamp he or she already uploaded, ask him/her if she/he wants to
-    update the stamp.
+    To load the images in the database
     All Activities -> Handling the 'back' button
  */
 

@@ -17,7 +17,7 @@ public class StampActivity extends AppCompatActivity {
 
     private List<City> city;
     private TextView txtCitysStamps;
-    private List<String> dataset;
+    private List<String> dataset, listStampsImageUrl;
     private DatabaseHelper databaseHelper;
     private RecyclerView recView;
     private PhotoRecViewAdapter adapter;
@@ -36,9 +36,11 @@ public class StampActivity extends AppCompatActivity {
         // The recyclerView is filled with the selected city's stamps
         txtCitysStamps.setText(getCityNameFromIntent());
         dataset = databaseHelper.getCitysStamps(getCityNameFromIntent());
+        listStampsImageUrl = databaseHelper.getStampsImageUrl(getCityNameFromIntent());
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false));
-        adapter = new PhotoRecViewAdapter(this, dataset, getEmailFromIntent());
+        adapter = new PhotoRecViewAdapter(this, dataset, listStampsImageUrl,
+                getEmailFromIntent());
         recView.setAdapter(adapter);
     }
 
@@ -48,6 +50,7 @@ public class StampActivity extends AppCompatActivity {
         recView = findViewById(R.id.recViewStamps);
         city = new ArrayList<>();
         dataset = new ArrayList<>();
+        listStampsImageUrl = new ArrayList<>();
     }
 
     private String getCityNameFromIntent() {

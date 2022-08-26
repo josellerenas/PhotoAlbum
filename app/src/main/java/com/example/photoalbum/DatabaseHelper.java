@@ -20,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_COUNTRY_NAME = "COUNTRY_NAME";
     public static final String COLUMN_STATE_NAME = "STATE_NAME";
     public static final String COLUMN_CITY_NAME = "CITY_NAME";
+    public static final String COLUMN_IMAGE_URL = "IMAGE_URL";
 
     public static final String TABLE_USERS = "USERS";
     public static final String COLUMN_USER_ID = "USER_ID";
@@ -265,13 +266,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public List<String> getCitiesImageUrl(String email) {
+        // In this case, because my user is from Colima, I need to select the ten cities from Colima
+        String state = "";
+        List<String> returnList = new ArrayList<>();
+        String queryString = "SELECT " + COLUMN_STATE + " FROM " + TABLE_USERS + " WHERE " +
+                COLUMN_EMAIL + " = '" + email + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            state = cursor.getString(0);
+        }
+
+        queryString = "SELECT " + COLUMN_IMAGE_URL + " FROM " + TABLE_CITIES + " WHERE " +
+                COLUMN_STATE_NAME + " = '" + state + "'";
+        cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                returnList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return returnList;
+    }
+
+    public List<String> getStampsImageUrl(String city) {
+        int cityID = 0;
+        List<String> returnList = new ArrayList<>();
+        // Query to know the city ID
+        String queryString = "SELECT " + COLUMN_CITY_ID + " FROM " + TABLE_CITIES + " WHERE " +
+                COLUMN_CITY_NAME + " = '" + city + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            cityID = cursor.getInt(0);
+        }
+
+        queryString = "SELECT " + COLUMN_IMAGE_URL + " FROM " + TABLE_STAMPS + " WHERE " +
+                COLUMN_CITY_ID + " = '" + cityID + "'";
+        cursor = db.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                returnList.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        return returnList;
+    }
+
     // Save Stamp
-    // In its actual state, this method saves the stamp without validating. Now, I need to
-    // add validation, so if the userID and the stampID both are already registered in the
-    // same register, update it.
     public boolean saveStamp(int userID, int stampID, String uploadDate, String stampLink) {
         if (isStampAlreadyOnTheDB(userID, stampID)) {
-            return updateStamp(uploadDate, stampLink);
+            updateStamp(userID, stampID, uploadDate, stampLink);
+            return true;
         } else {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues cv = new ContentValues();
@@ -290,6 +335,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    //TODO Create a method that gets all the image urls from the database and puts it into a list
+
     public boolean isStampAlreadyOnTheDB(int userID, int stampID) {
         String queryString = "SELECT " + COLUMN_USER_ID + " FROM " + TABLE_USERS_STAMPS + " WHERE " +
                 COLUMN_USER_ID + " = '" + userID + "' AND " + COLUMN_STAMP_ID + " = '" + stampID + "'";
@@ -301,15 +348,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
-    // TODO keep modifying this method
-    public boolean updateStamp(String uploadDate, String stampLink) {
+    // Updates a register
+    public void updateStamp(int userID, int stampID, String uploadDate, String stampLink) {
         String queryString = "UPDATE " + TABLE_USERS_STAMPS + " SET " + COLUMN_UPLOAD_DATE +
-                " = '" + uploadDate + "', " + COLUMN_STAMP_LINK + " = '";
+                " = '" + uploadDate + "', " + COLUMN_STAMP_LINK + " = '" + stampLink + "' WHERE " +
+                COLUMN_USER_ID + " = " + userID + " AND " + COLUMN_STAMP_ID + " = " + stampID;
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(queryString, null);
-        if (cursor.moveToFirst()) {
-            return true;
-        }
-        return false;
+        db.execSQL(queryString);
+//        Cursor cursor = db.rawQuery(queryString, null);
+//        if (cursor.moveToFirst()) {
+//            return true;
+//        }
+//        return false;
     }
 }

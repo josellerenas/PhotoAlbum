@@ -5,23 +5,22 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapter.ViewHolder> {
 
     // Declaring variables
     // NOTE: Here, I changed albumName from being an ArrayList to List
-    private List<String> albumName;
+    private List<String> listNames, listImageUrl;
     private List<City> city;
     private Context mContext;
     private String userEmail;
@@ -42,10 +41,11 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
 //    }
 
     // Normal Constructor
-    PhotoRecViewAdapter(Context mContext, List<String> data,
+    PhotoRecViewAdapter(Context mContext, List<String> data, List<String> imageData,
                         String userEmail) {
         this.mContext = mContext;
-        this.albumName = data;
+        this.listNames = data;
+        this.listImageUrl = imageData;
         this.userEmail = userEmail;
     }
 
@@ -63,19 +63,23 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
     // this document.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtAlbumName.setText(albumName.get(position));
+        holder.txtAlbumName.setText(listNames.get(position));
+        Picasso.get()
+                .load(listImageUrl.get(position))
+                .into(holder.imgAlbum);
+
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mContext.toString().contains("LoginActivity")) {
                     Intent intent = new Intent(mContext, StampActivity.class);
-                    intent.putExtra("city_name", albumName.get(position));
+                    intent.putExtra("city_name", listNames.get(position));
                     intent.putExtra("user_email", userEmail);
                     mContext.startActivity(intent);
                 } else if (mContext.toString().contains("StampActivity")) {
                     Intent intent = new Intent(mContext, IndividualStampActivity.class);
-                    intent.putExtra("stamp_name", albumName.get(position));
+                    intent.putExtra("stamp_name", listNames.get(position));
                     intent.putExtra("user_email", userEmail);
                     mContext.startActivity(intent);
                 }
@@ -85,7 +89,7 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
 
     @Override
     public int getItemCount() {
-        return albumName.size();
+        return listNames.size();
     }
 
     public void setCity(List<City> city) {

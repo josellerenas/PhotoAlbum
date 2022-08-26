@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView txtUser_Login;
     private RecyclerView recView;
     private PhotoRecViewAdapter adapter;
-    private List<String> dataset;
+    private List<String> dataset, listCitiesImage;
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -32,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         txtUser_Login = findViewById(R.id.txtUser_Login);
         dataset = new ArrayList<>();
+        listCitiesImage = new ArrayList<>();
 
         // Putting an arrow back icon in the action bar. Only the visual
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -39,10 +39,12 @@ public class LoginActivity extends AppCompatActivity {
         // The recyclerView is filled with the user's origin state cities
         txtUser_Login.setText(getFirstNameFromIntent());
         dataset = databaseHelper.getUsersCities(getEmailFromIntent());
+        //TODO the same I did with dataset, but with image urls
+        listCitiesImage = databaseHelper.getCitiesImageUrl(getEmailFromIntent());
         recView = findViewById(R.id.recViewLatest);
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,
                 false));
-        adapter = new PhotoRecViewAdapter(this, dataset, getEmailFromIntent());
+        adapter = new PhotoRecViewAdapter(this, dataset, listCitiesImage, getEmailFromIntent());
         recView.setAdapter(adapter);
     }
 
