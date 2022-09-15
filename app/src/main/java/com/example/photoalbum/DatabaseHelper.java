@@ -335,8 +335,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    //TODO Create a method that gets all the image urls from the database and puts it into a list
-
     public boolean isStampAlreadyOnTheDB(int userID, int stampID) {
         String queryString = "SELECT " + COLUMN_USER_ID + " FROM " + TABLE_USERS_STAMPS + " WHERE " +
                 COLUMN_USER_ID + " = '" + userID + "' AND " + COLUMN_STAMP_ID + " = '" + stampID + "'";

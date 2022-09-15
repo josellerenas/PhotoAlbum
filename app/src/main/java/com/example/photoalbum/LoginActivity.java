@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         // The recyclerView is filled with the user's origin state cities
         txtUser_Login.setText(getFirstNameFromIntent());
         dataset = databaseHelper.getUsersCities(getEmailFromIntent());
-        //TODO the same I did with dataset, but with image urls
+
         listCitiesImage = databaseHelper.getCitiesImageUrl(getEmailFromIntent());
         recView = findViewById(R.id.recViewLatest);
         recView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,

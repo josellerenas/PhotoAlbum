@@ -94,7 +94,7 @@ public class PhotoRecViewAdapter extends RecyclerView.Adapter<PhotoRecViewAdapte
 
     public void setCity(List<City> city) {
         this.city = city;
-        notifyDataSetChanged();
+            notifyDataSetChanged();
     }
 
     // Declaring ViewHolder class, which will be used in the onBindViewHolder event

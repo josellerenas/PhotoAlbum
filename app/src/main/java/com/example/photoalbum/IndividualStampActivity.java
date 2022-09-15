@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -16,12 +17,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class IndividualStampActivity extends AppCompatActivity {
 
@@ -32,6 +41,9 @@ public class IndividualStampActivity extends AppCompatActivity {
     private String stampLink;
     private TextView txtTitle;
     final int REQUEST_IMAGE_OPEN = 1;
+    private Uri fullPhotoUri;
+    StorageReference storageReference;
+    ProgressDialog progressDialog;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,41 @@ public class IndividualStampActivity extends AppCompatActivity {
 
     }
 
+    public void uploadImage(Uri fullPhotoUri) {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading File...");
+        progressDialog.show();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.US);
+        Date now = new Date();
+        String fileName = formatter.format(now);
+
+        storageReference = FirebaseStorage.getInstance().getReference("images/" + fileName);
+
+        storageReference.putFile(fullPhotoUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Toast.makeText(IndividualStampActivity.this,"Great! Another picture to the album!", Toast.LENGTH_SHORT).show();
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Toast.makeText(IndividualStampActivity.this,"Failed to upload. Please, try again", Toast.LENGTH_SHORT).show();
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+
+                    }
+                });
+    }
+
     public void selectImage() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
@@ -79,11 +126,12 @@ public class IndividualStampActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_OPEN && resultCode == RESULT_OK) {
-            Uri fullPhotoUri = data.getData();
+            fullPhotoUri = data.getData();
             stampLink = fullPhotoUri.toString();
             Picasso.get()
                     .load(fullPhotoUri)
                     .into(imgStamp);
+            uploadImage(fullPhotoUri);
         }
     }
 

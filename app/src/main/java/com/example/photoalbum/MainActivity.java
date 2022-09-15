@@ -15,8 +15,10 @@ import android.widget.Toast;
     RegisteredActivity -> Checked and working 01/08/22
     LoginActivity -> Checked and working 02/08/22
 
+    Last update 14-sept-22: I can upload images to Firebase Storage.
     TODO
-    To load the images in the database
+    IndividualStampActivity: Load images already in Firebase Storage.
+    Move database to Firebase.
     All Activities -> Handling the 'back' button
  */
 
